@@ -1,4 +1,4 @@
-AC_INIT([segclust],0.07)
+AC_INIT([segclust],0.08)
 
 dnl Copy/Pasted from documentation example.
 : ${R_HOME=`R RHOME`}
