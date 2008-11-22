@@ -1,10 +1,13 @@
 #include "Segmentation_mixt.h"
 /**#include <fstream>**/
+#include <limits>
 #include <list>
 #include <cmath>
 #include <cstdlib>
 #include <memory>
 #include <math.h>
+#include <cstring>
+
 using namespace std;
 
 namespace segclust

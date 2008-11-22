@@ -1,3 +1,0 @@
-PKG_CXXGLAGS= `@GSL_CONFIG@ --cflags`
-PKG_LIBS= `@GSL_CONFIG@ --libs`
-

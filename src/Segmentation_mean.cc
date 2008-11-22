@@ -1,9 +1,11 @@
 #include "Segmentation_mean.h"
 //#include <fstream>
+#include <limits>
 #include <list>
 #include <cmath>
 #include <cstdlib>
 #include <memory>
+#include <cstring>
 
 using namespace std;
 

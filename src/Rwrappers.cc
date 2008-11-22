@@ -338,7 +338,7 @@ SEXP sc_segmixt(SEXP xR, SEXP lminR, SEXP lmaxR, SEXP KmaxR, SEXP phiR, SEXP PR)
   return res;
 }
 
-SEXP sc_EMalgo(SEXP xR, SEXP ruptR, SEXP KR, SEXP PR, SEXP vhR)
+SEXP sc_EMalgo(SEXP xR, SEXP phiR, SEXP ruptR, SEXP KR, SEXP PR, SEXP vhR)
 {
   long K      = *(INTEGER(KR));
   long P      = *(INTEGER(PR));
@@ -360,7 +360,10 @@ SEXP sc_EMalgo(SEXP xR, SEXP ruptR, SEXP KR, SEXP PR, SEXP vhR)
     for (int row=0;row<K;row++,index++)
 		gsl_matrix_set(rupt,row,col,REAL(ruptR)[index]);
 
-  gsl_vector *phi0 = EM_init(x,rupt,K,P,vh);
+  gsl_vector *phi0 = gsl_vector_calloc(3*P);
+  for (int p=0;p<phi0->size;p++)
+    gsl_vector_set(phi0,p,REAL(phiR)[p]);
+/*  gsl_vector *phi0 = EM_init(x,rupt,K,P,vh);*/
 
   gsl_vector *phi_res = NULL;
   gsl_matrix *tau_res = NULL;
@@ -382,3 +385,35 @@ SEXP sc_EMalgo(SEXP xR, SEXP ruptR, SEXP KR, SEXP PR, SEXP vhR)
 }
 
 
+SEXP sc_EMinit(SEXP xR, SEXP ruptR, SEXP KR, SEXP PR, SEXP vhR)
+{
+  long K      = *(INTEGER(KR));
+  long P      = *(INTEGER(PR));
+  bool vh     = true;
+  int vhInt   = *(LOGICAL(vhR));
+  if (!vhInt)
+    vh=false;
+
+  int length_x  = length(xR);
+  gsl_vector *x = gsl_vector_calloc(length_x);
+  for (int i=0;i<x->size;i++)
+    gsl_vector_set(x,i,REAL(xR)[i]);
+
+  gsl_matrix *rupt=gsl_matrix_alloc(K,2);
+  for (int index=0,col=0;col<2;col++)
+    for (int row=0;row<K;row++,index++)
+		gsl_matrix_set(rupt,row,col,REAL(ruptR)[index]);
+
+  gsl_vector *phi0 = EM_init(x,rupt,K,P,vh);
+
+  SEXP res;
+  PROTECT(res=allocVector(REALSXP,3*P));
+  for (int i=0;i<phi0->size;i++)
+    REAL(res)[i] = gsl_vector_get(phi0,i);
+  
+  UNPROTECT(1);
+	  
+  gsl_vector_free(phi0);
+  gsl_vector_free(x);
+  return res;
+}

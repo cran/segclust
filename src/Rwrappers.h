@@ -11,7 +11,8 @@ extern "C" {
   SEXP sc_logdens(SEXP xk, SEXP P, SEXP phi); 
   SEXP sc_segmean(SEXP x, SEXP lmin, SEXP lmax, SEXP Kmax, SEXP vh);
   SEXP sc_segmixt(SEXP x, SEXP lmin, SEXP lmax, SEXP Kmax, SEXP phi, SEXP P);
-  SEXP sc_EMalgo(SEXP xR, SEXP ruptR, SEXP KR, SEXP PR, SEXP vhR);
+  SEXP sc_EMalgo(SEXP xR, SEXP phiR, SEXP ruptR, SEXP KR, SEXP PR, SEXP vhR);
+  SEXP sc_EMinit(SEXP xR, SEXP ruptR, SEXP KR, SEXP PR, SEXP vhR);
 }
 
 #endif

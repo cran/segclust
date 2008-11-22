@@ -107,7 +107,7 @@ segmixt <- function(x,P,Kmax,phi,lmin=1,lmax=length(x)) {
   }
 }
 
-EMalgo <- function(x,rupt,P,vh=TRUE){
+EMalgo <- function(x,phi,rupt,P,vh=TRUE){
   checkoptions = TRUE
   K = dim(rupt)[1]
   if (P>K){
@@ -116,8 +116,25 @@ EMalgo <- function(x,rupt,P,vh=TRUE){
   }
   if (checkoptions == TRUE){
     storage.mode(x)<-"double"
+    storage.mode(phi) <-"double"
     storage.mode(rupt) <- "double"
-    .Call("sc_EMalgo",x,rupt,as.integer(K),as.integer(P),as.logical(vh))
+    .Call("sc_EMalgo",x,phi,rupt,as.integer(K),as.integer(P),as.logical(vh))
+  }
+  
+}
+
+
+EMinit <- function(x,rupt,P,vh=TRUE){
+  checkoptions = TRUE
+  K = dim(rupt)[1]
+  if (P>K){
+    checkoptions = FALSE
+    cat("Error in EMinit : the number of groups must be lower than the number of segments","\n")
+  }
+  if (checkoptions == TRUE){
+    storage.mode(x)<-"double"
+    storage.mode(rupt) <- "double"
+    .Call("sc_EMinit",x,rupt,as.integer(K),as.integer(P),as.logical(vh))
   }
   
 }
