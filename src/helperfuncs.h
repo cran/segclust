@@ -4,9 +4,15 @@
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_vector.h>
 
+extern "C" {
+
+  typedef double (*basicfunc)(const double);
+
+}
+
 namespace segclust {
 
-typedef double (*basicfunc)(const double);
+
 
 gsl_matrix * apply_basicfunc_gsl_matrix(gsl_matrix *, basicfunc);
 

@@ -59,9 +59,8 @@ ostream & operator << (ostream &s, const Segmentation_mean &Seg_mean)
       s << Seg_mean._BestBreaks[k][l] << " ";
     s << endl;
   }
-
-  return s;
 **/
+  return s;
 }
 
 // Reccurrence : calculates level k, assuming that level (k - 1) has already been done

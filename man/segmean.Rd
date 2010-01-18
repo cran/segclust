@@ -8,7 +8,7 @@
  	out <- segmean(x,Kmax,lmin=1,lmax=length(x),vh=TRUE)
  }
  \details{ This function can be used for a segmentation model such that:
- \deqn{\forall t \in I_k \,\, Y_t = \mu_k + \varepsilon_t}{for t in I_k, Y_t = \mu_k + epsilon_t,} and the variance of $\epsilon$ can be either
+ \deqn{\forall t \in I_k \,\, Y_t = \mu_k + \varepsilon_t}{for t in I_k, Y_t = \mu_k + epsilon_t,} and the variance of \eqn{\epsilon_t} can be either
 homoscedastic (vh=TRUE) or heteroscedastic (vh=FALSE). It uses dynamic programming to find the best breakpoints, and is based on the 
 calculus of the Residual Sum of Squares: \deqn{J.est_K = \sum_{k=1}^{K} \sum_{t \in I_k} (y_t-\hat{\mu}_k)^2.}{J.est_K = \sum_{k=1}^{K} \sum_{t \in I_k} (y_t-\hat{\mu}_k)^2.}
  }

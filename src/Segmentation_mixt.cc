@@ -60,9 +60,8 @@ ostream & operator << (ostream &s, const Segmentation_mixt &Seg_mixt)
       s << Seg_mixt._BestBreaks[k][l] << " ";
     s << endl;
   }
-
-  return s;
 **/
+  return s;
 }
 
 
@@ -123,7 +122,7 @@ void Segmentation_mixt::Init(double *Data, double *param)
 {
 
   double aux,Cij;
-  double pi = acos(-1);
+  double pi = acos((double)-1.0);
   memcpy(_x,Data,sizeof(double)*_lengthx);
   memcpy(_phi,param,sizeof(double)*3*_P);
 
@@ -149,12 +148,12 @@ void Segmentation_mixt::Init(double *Data, double *param)
 
       
 
-      double dkp[_P];
-
+      double *dkp=new double[_P];
+      double *fyk=new double[_P];
       for (int p=0; p<_P; p++) 
         dkp[p] = (ykbar - _phi[p])*(ykbar - _phi[p]);
 
-      double fyk[_P];
+
       for (int p=0; p<_P; p++) 
       {
         fyk[p] = 0.5* ni * (-(dkp[p]+wk)/(_phi[_P+p]*_phi[_P+p]) -log(2*pi*_phi[_P+p]*_phi[_P+p]) ) + log(_phi[2*_P+p]);
@@ -174,6 +173,9 @@ void Segmentation_mixt::Init(double *Data, double *param)
 
       Cij = -log(Cij)-max;
      _Cost[i][j]=Cij; 
+
+     delete[] fyk;
+     delete[] dkp;
     }
   if (_lmax<_lengthx)
     {
@@ -199,12 +201,12 @@ void Segmentation_mixt::Init(double *Data, double *param)
 	    y2kbar /= ni;
 	    wk      = y2kbar - ykbar*ykbar ;
 	    
-	    double dkp[_P];
+	    double *dkp=new double[_P];
+	    double *fyk=new double[_P];
 	    
 	    for (int p=0; p<_P; p++) 
 	      dkp[p] = (ykbar - _phi[p])*(ykbar - _phi[p]);
 	    
-	    double fyk[_P];
 	    for (int p=0; p<_P; p++) 
 	      {
 		fyk[p] = 0.5* ni * (-(dkp[p]+wk)/(_phi[_P+p]*_phi[_P+p]) -log(2*pi*_phi[_P+p]*_phi[_P+p]) ) + log(_phi[2*_P+p]);
@@ -224,6 +226,9 @@ void Segmentation_mixt::Init(double *Data, double *param)
 	    
 	    Cij = -log(Cij)-max;
 	    _Cost[i][j]=Cij; 
+
+	    delete[] fyk;
+	    delete[] dkp;
 	  }
     }
 
