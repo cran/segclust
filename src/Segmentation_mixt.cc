@@ -124,7 +124,7 @@ void Segmentation_mixt::Init(double *Data, double *param)
   double aux,Cij;
   double pi = acos((double)-1.0);
   memcpy(_x,Data,sizeof(double)*_lengthx);
-  memcpy(_phi,param,sizeof(double)*3*_P);
+  memcpy(_phi,param,sizeof(double)*3*_Pclusters);
 
   for (int i = 0; i < _lmax - _lmin+1; i++)
     for (int j = 0; j < i + 1; j++)
@@ -148,27 +148,27 @@ void Segmentation_mixt::Init(double *Data, double *param)
 
       
 
-      double *dkp=new double[_P];
-      double *fyk=new double[_P];
-      for (int p=0; p<_P; p++) 
+      double *dkp=new double[_Pclusters];
+      double *fyk=new double[_Pclusters];
+      for (int p=0; p<_Pclusters; p++) 
         dkp[p] = (ykbar - _phi[p])*(ykbar - _phi[p]);
 
 
-      for (int p=0; p<_P; p++) 
+      for (int p=0; p<_Pclusters; p++) 
       {
-        fyk[p] = 0.5* ni * (-(dkp[p]+wk)/(_phi[_P+p]*_phi[_P+p]) -log(2*pi*_phi[_P+p]*_phi[_P+p]) ) + log(_phi[2*_P+p]);
+        fyk[p] = 0.5* ni * (-(dkp[p]+wk)/(_phi[_Pclusters+p]*_phi[_Pclusters+p]) -log(2*pi*_phi[_Pclusters+p]*_phi[_Pclusters+p]) ) + log(_phi[2*_Pclusters+p]);
       }
       double max = fyk[0];
-      for (int p=1; p<_P; p++)
+      for (int p=1; p<_Pclusters; p++)
       {
       if (fyk[p]>max) 
         max = fyk[p];
       }
 
-      for (int p=0; p<_P; p++)
+      for (int p=0; p<_Pclusters; p++)
         fyk[p] = exp(fyk[p]-max);
 
-      for (int p=0; p<_P; p++)
+      for (int p=0; p<_Pclusters; p++)
         Cij += fyk[p];
 
       Cij = -log(Cij)-max;
@@ -201,27 +201,27 @@ void Segmentation_mixt::Init(double *Data, double *param)
 	    y2kbar /= ni;
 	    wk      = y2kbar - ykbar*ykbar ;
 	    
-	    double *dkp=new double[_P];
-	    double *fyk=new double[_P];
+	    double *dkp=new double[_Pclusters];
+	    double *fyk=new double[_Pclusters];
 	    
-	    for (int p=0; p<_P; p++) 
+	    for (int p=0; p<_Pclusters; p++) 
 	      dkp[p] = (ykbar - _phi[p])*(ykbar - _phi[p]);
 	    
-	    for (int p=0; p<_P; p++) 
+	    for (int p=0; p<_Pclusters; p++) 
 	      {
-		fyk[p] = 0.5* ni * (-(dkp[p]+wk)/(_phi[_P+p]*_phi[_P+p]) -log(2*pi*_phi[_P+p]*_phi[_P+p]) ) + log(_phi[2*_P+p]);
+		fyk[p] = 0.5* ni * (-(dkp[p]+wk)/(_phi[_Pclusters+p]*_phi[_Pclusters+p]) -log(2*pi*_phi[_Pclusters+p]*_phi[_Pclusters+p]) ) + log(_phi[2*_Pclusters+p]);
 	      }
 	    double max = fyk[0];
-	    for (int p=1; p<_P; p++)
+	    for (int p=1; p<_Pclusters; p++)
 	      {
 		if (fyk[p]>max) 
 		  max = fyk[p];
 	      }
 	    
-	    for (int p=0; p<_P; p++)
+	    for (int p=0; p<_Pclusters; p++)
 	      fyk[p] = exp(fyk[p]-max);
 	    
-	    for (int p=0; p<_P; p++)
+	    for (int p=0; p<_Pclusters; p++)
 	      Cij += fyk[p];
 	    
 	    Cij = -log(Cij)-max;
@@ -248,11 +248,11 @@ Segmentation_mixt::Segmentation_mixt(int n, int c, int minlength, int maxlength,
 {
   _lengthx    = n; 
   _Kmax       = c;
-  _P          = nbclust;
+  _Pclusters          = nbclust;
   _lmin       = minlength;
   _lmax       = maxlength;
   _x          = new double[_lengthx];
-  _phi        = new double[3*_P];
+  _phi        = new double[3*_Pclusters];
   _Cost       = new double *[_lengthx-_lmin+1];
   _D          = new double *[_Kmax];
   _Breaks     = new int  *[_Kmax-1];
@@ -261,7 +261,7 @@ Segmentation_mixt::Segmentation_mixt(int n, int c, int minlength, int maxlength,
   for (int i = 0; i < _lengthx; i++)
     _x[i] = 0;
 
-  for (int p = 0; p < 3*_P; p++)
+  for (int p = 0; p < 3*_Pclusters; p++)
     _phi[p] = 0;
 
   for (int i = 0; i < _lengthx-_lmin+1; i++)
